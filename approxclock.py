@@ -1,5 +1,6 @@
+#! /usr/local/bin/python
 #
-# Copyright (c) 2008 Mike Williams <mrw@eandem.co.uk>
+# Copyright (c) 2008-2010 Mike Williams <mrw@eandem.co.uk>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +17,7 @@
 
 # Ideas:
 # o Short a long versions (e.g. whether to include 'minutes' as in x minutes past/to y
-# o Run fast slow but x mins
+# o Run fast slow by x mins
 # o Split hour and min calculations from string generation
 # o Resolutions - hour, half hour, quarter hour, 5 mins
 # o noon or midday
@@ -37,15 +38,15 @@ def hour_str(hour, minutes):
 
 def approx_time(hour, minute):
     per_5_mins = [
-                'XXX',
-                'Five',
-                'Ten',
-                'Quarter',
-                'Twenty',
-                'Twenty five',
-                'Half',
-            ]
-    mins = int((minute + 2.5)/5)
+                    'XXX',
+                    'Five',
+                    'Ten',
+                    'Quarter',
+                    'Twenty',
+                    'Twenty five',
+                    'Half',
+                 ]
+    mins = (minute + 2)/5
     if mins == 0 or mins == 12:
         return '%s.' % hour_str(hour, mins)
     elif mins < 7:
