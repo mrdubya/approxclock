@@ -23,40 +23,52 @@
 # o noon or midday
 #
 
-def hour_str(hour, minutes):
-    """Return hour as colloquial string."""
-    h = hour%12
-    if h == 0:
-        if hour == 12:
-            return 'Midday'
-        if hour == 0:
-            return 'Midnight'
-    if minutes == 0:
-        return '%s o\'clock' % (h)
-    else:
-        return '%s' % (h)
+import time
 
-def approx_time(hour, minute):
-    per_5_mins = [
-                    'XXX',
-                    'Five',
-                    'Ten',
-                    'Quarter',
-                    'Twenty',
-                    'Twenty five',
-                    'Half',
-                 ]
-    mins = (minute + 2)/5
-    if mins == 0 or mins == 12:
-        return '%s.' % hour_str(hour, mins)
-    elif mins < 7:
-        return '%s past %s.' % (per_5_mins[mins], hour_str(hour, mins))
-    else:
-        return '%s to %s.' % (per_5_mins[12 - mins], hour_str((hour + 1)%24, mins))
+class ApproxClock(object):
+
+
+    def __init__(self):
+        pass
+
+    def __hour(self, hour, minutes):
+        """Return hour as colloquial string."""
+        hours = [ 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
+                'Eight', 'Nine', 'Ten', 'Eleven' ]
+        h = hour%12
+        if h == 0:
+            if hour == 12:
+                return 'Midday'
+            if hour == 0:
+                return 'Midnight'
+        if minutes == 0:
+            return '%s o\'clock' % (h)
+        else:
+            return '%s' % (hours[h - 1])
+
+    def __str(self, hour, minutes):
+        per_5_mins = [ 'Five', 'Ten', 'Quarter', 'Twenty', 'Twenty-five', 'Half' ]
+        mins = (minutes + 2)/5
+        if mins == 0 or mins == 12:
+            return '%s.' % self.__hour(hour, mins)
+        elif mins < 7:
+            return '%s past %s.' % (per_5_mins[mins - 1], self.__hour(hour, mins))
+        else:
+            return '%s to %s.' % (per_5_mins[11 - mins], self.__hour((hour + 1)%24, mins))
+
+    def time(self, hour, minutes):
+        return self.__str(hour, minutes)
+
+    def __str__(self):
+        hour, minutes, secs = time.localtime()[3:6]
+        if secs >= 30:
+            minutes += 1
+        return self.__str(hour, minutes)
 
 if __name__ == '__main__':
+    a = ApproxClock()
     for hour in [0, 3, 8, 11, 15, 23]:
         for minute in [0, 5, 13, 18, 29, 36, 47, 54]:
-            print approx_time(hour, minute)
+            print a.time(hour, minute)
 
 #eof
