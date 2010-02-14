@@ -16,20 +16,23 @@
 #
 
 # Ideas:
-# o Short a long versions (e.g. whether to include 'minutes' as in x minutes past/to y
-# o Run fast slow by x mins
+# o Run fast or slow by x mins
 # o Split hour and min calculations from string generation
 # o Resolutions - hour, half hour, quarter hour, 5 mins
 # o noon or midday
+# o words or numbers - five past four, 4.05
+# o morning/afternoon, am/pm, or not
 #
 
-import time
+import datetime
 
 class ApproxClock(object):
 
-
-    def __init__(self):
-        pass
+    def __init__(self, fast=0, words=True, ampm=False, noon=True):
+        self.__fast = fast
+        self.__words = words
+        self.__ampm = ampm
+        self.__noon = noon
 
     def __hour(self, hour, minutes):
         """Return hour as colloquial string."""
@@ -60,13 +63,19 @@ class ApproxClock(object):
         return self.__str(hour, minutes)
 
     def __str__(self):
-        hour, minutes, secs = time.localtime()[3:6]
-        if secs >= 30:
-            minutes += 1
-        return self.__str(hour, minutes)
+        # Current time plus fast clock offset to the nearest minute
+        time = datetime.datetime.now() + \
+                datetime.timedelta(seconds=(self.__fast*60 + 30))
+        return self.__str(time.hour, time.minute)
+
+    def __repr__(self):
+        return '%s.%s(%s, %s, %s, %s)' % (self.__class__.__module__,
+                self.__class__.__name__, self.__fast, self.__words,
+                self.__ampm, self.__noon)
 
 if __name__ == '__main__':
     a = ApproxClock()
+    print repr(a)
     for hour in [0, 3, 8, 11, 15, 23]:
         for minute in [0, 5, 13, 18, 29, 36, 47, 54]:
             print a.time(hour, minute)
