@@ -15,8 +15,58 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
+"""Display the approximate time.
+
+usage: atime [-h] [-f mins] [-r mins]
+
+-f how many minutes fast the clock is.  Default is 0.
+-h display this help
+-r clock resolution - 5, 10, 15, or 20 minutes. Default is 5.
+
+"""
+
+import getopt
+import re
+import sys
+
 import approxclock
 
-print approxclock.ApproxClock()
+# Utility product information
+__product__ = 'Approximate Time'
+__copyright__ = 'Copyright 2008-2010 Michael R. Williams. All rights reserved.'
+version_info = (0, 1, 0, 'alpha', 0)
+__version__ = '%d.%d.%d' % version_info[:3]
+if version_info[3] != 'final':
+    __version__ += ' %s.%d' % version_info[3:]
+
+__description__ = '%s %s.\n%s' % (__product__, __version__, __copyright__)
+
+USAGE = re.search('^usage:.*', __doc__, re.MULTILINE).group()
+
+def usage(mesg):
+    sys.exit('%s\n%s' % (mesg, USAGE))
+
+try:
+    opts, pargs = getopt.getopt(sys.argv[1:], "f:hr:")
+except getopt.GetoptError, e:
+    usage(e)
+
+# Process options
+resolution = 5
+fast = 0
+for option, value in opts:
+    if option == '-h':
+        print '%s\n%s' % (__description__, __doc__)
+        sys.exit()
+
+    elif option == '-f':  # Minutes fast
+        fast = int(value)
+
+    elif option == '-r':  # Clock resolution
+        resolution = int(value)
+        if resolution % 5 != 0 or resolution > 20:
+            usage('Invalid clock resolution %d.' % resolution)
+
+print approxclock.ApproxClock(fast=fast, resolution=resolution)
 
 #eof

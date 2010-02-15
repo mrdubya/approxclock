@@ -16,9 +16,7 @@
 #
 
 # Ideas:
-# o Run fast or slow by x mins
 # o Split hour and min calculations from string generation
-# o Resolutions - hour, half hour, quarter hour, 5 mins
 # o noon or midday
 # o words or numbers - five past four, 4.05
 # o morning/afternoon, am/pm, or not
@@ -28,8 +26,9 @@ import datetime
 
 class ApproxClock(object):
 
-    def __init__(self, fast=0, words=True, ampm=False, noon=True):
+    def __init__(self, fast=0, resolution=5, words=True, ampm=False, noon=True):
         self.__fast = fast
+        self.__resolution = resolution
         self.__words = words
         self.__ampm = ampm
         self.__noon = noon
@@ -42,16 +41,19 @@ class ApproxClock(object):
         if h == 0:
             if hour == 12:
                 return 'Midday'
-            if hour == 0:
-                return 'Midnight'
+            return 'Midnight'
         if minutes == 0:
             return '%s o\'clock' % (h)
-        else:
-            return '%s' % (hours[h - 1])
+        return '%s' % (hours[h - 1])
+
+    def __minutes(self, minutes):
+        # Map minutes to nearest resolution for the clock, all of which have 5
+        # as a common factor
+        return ((minutes + self.__resolution/2)/self.__resolution*self.__resolution)/5
 
     def __str(self, hour, minutes):
         per_5_mins = [ 'Five', 'Ten', 'Quarter', 'Twenty', 'Twenty-five', 'Half' ]
-        mins = (minutes + 2)/5
+        mins = self.__minutes(minutes)
         if mins == 0 or mins == 12:
             return '%s.' % self.__hour(hour, mins)
         elif mins < 7:
@@ -69,9 +71,9 @@ class ApproxClock(object):
         return self.__str(time.hour, time.minute)
 
     def __repr__(self):
-        return '%s.%s(%s, %s, %s, %s)' % (self.__class__.__module__,
-                self.__class__.__name__, self.__fast, self.__words,
-                self.__ampm, self.__noon)
+        return '%s.%s(%s, %s, %s, %s, %s)' % (self.__class__.__module__,
+                self.__class__.__name__, self.__fast, self.__resolution,
+                self.__words, self.__ampm, self.__noon)
 
 if __name__ == '__main__':
     a = ApproxClock()
