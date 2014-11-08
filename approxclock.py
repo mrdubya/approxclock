@@ -1,6 +1,6 @@
 #! /usr/local/bin/python
 #
-# Copyright (c) 2008-2010 Mike Williams <mrw@eandem.co.uk>
+# Copyright (c) 2008-2014 Mike Williams <mrw@eandem.co.uk>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -24,9 +24,11 @@
 
 import datetime
 
+
 class ApproxClock(object):
 
-    def __init__(self, fast=0, resolution=5, words=True, ampm=False, noon=True):
+    def __init__(self, fast=0, resolution=5, words=True, ampm=False,
+                 noon=True):
         self.__fast = fast
         self.__resolution = resolution
         self.__words = words
@@ -35,9 +37,9 @@ class ApproxClock(object):
 
     def __hour(self, hour, minutes):
         """Return hour as colloquial string."""
-        hours = [ 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
-                'Eight', 'Nine', 'Ten', 'Eleven' ]
-        h = hour%12
+        hours = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
+                 'Eight', 'Nine', 'Ten', 'Eleven']
+        h = hour % 12
         if h == 0:
             if hour == 12:
                 return 'Midday'
@@ -49,17 +51,21 @@ class ApproxClock(object):
     def __minutes(self, minutes):
         # Map minutes to nearest resolution for the clock, all of which have 5
         # as a common factor
-        return ((minutes + self.__resolution/2)/self.__resolution*self.__resolution)/5
+        return ((minutes + self.__resolution / 2) /
+                self.__resolution*self.__resolution)/5
 
     def __str(self, hour, minutes):
-        per_5_mins = [ 'Five', 'Ten', 'Quarter', 'Twenty', 'Twenty-five', 'Half' ]
+        per_5_mins = ['Five', 'Ten', 'Quarter', 'Twenty', 'Twenty-five',
+                      'Half']
         mins = self.__minutes(minutes)
         if mins == 0 or mins == 12:
             return '%s.' % self.__hour(hour, mins)
         elif mins < 7:
-            return '%s past %s.' % (per_5_mins[mins - 1], self.__hour(hour, mins))
+            return '%s past %s.' % (per_5_mins[mins - 1],
+                                    self.__hour(hour, mins))
         else:
-            return '%s to %s.' % (per_5_mins[11 - mins], self.__hour((hour + 1)%24, mins))
+            return '%s to %s.' % (per_5_mins[11 - mins],
+                                  self.__hour((hour + 1) % 24, mins))
 
     def time(self, hour, minutes):
         return self.__str(hour, minutes)
@@ -67,13 +73,13 @@ class ApproxClock(object):
     def __str__(self):
         # Current time plus fast clock offset to the nearest minute
         time = datetime.datetime.now() + \
-                datetime.timedelta(seconds=(self.__fast*60 + 30))
+            datetime.timedelta(seconds=(self.__fast*60 + 30))
         return self.__str(time.hour, time.minute)
 
     def __repr__(self):
-        return '%s.%s(%s, %s, %s, %s, %s)' % (self.__class__.__module__,
-                self.__class__.__name__, self.__fast, self.__resolution,
-                self.__words, self.__ampm, self.__noon)
+        return '%s.%s(%s, %s, %s, %s, %s)' % \
+            (self.__class__.__module__, self.__class__.__name__, self.__fast,
+             self.__resolution, self.__words, self.__ampm, self.__noon)
 
 if __name__ == '__main__':
     a = ApproxClock()
@@ -82,4 +88,4 @@ if __name__ == '__main__':
         for minute in [0, 5, 13, 18, 29, 36, 47, 54]:
             print a.time(hour, minute)
 
-#eof
+# eof

@@ -1,6 +1,6 @@
 #! /usr/local/bin/python
 #
-# Copyright (c) 2008-2010 Mike Williams <mrw@eandem.co.uk>
+# Copyright (c) 2008-2014 Mike Williams <mrw@eandem.co.uk>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -33,7 +33,7 @@ import approxclock
 
 # Utility product information
 __product__ = 'Approximate Time'
-__copyright__ = 'Copyright 2008-2010 Michael R. Williams. All rights reserved.'
+__copyright__ = 'Copyright 2008-2014 Michael R. Williams. All rights reserved.'
 version_info = (0, 1, 0, 'alpha', 0)
 __version__ = '%d.%d.%d' % version_info[:3]
 if version_info[3] != 'final':
@@ -42,6 +42,7 @@ if version_info[3] != 'final':
 __description__ = '%s %s.\n%s' % (__product__, __version__, __copyright__)
 
 USAGE = re.search('^usage:.*', __doc__, re.MULTILINE).group()
+
 
 def usage(mesg):
     sys.exit('%s\n%s' % (mesg, USAGE))
@@ -69,4 +70,4 @@ for option, value in opts:
 
 print approxclock.ApproxClock(fast=fast, resolution=resolution)
 
-#eof
+# eof
