@@ -9,6 +9,6 @@ setup(name='approxclock',
       author_email='mrmrdubya@gmail.com',
       license='ISC',
       packages=['approxclock'],
-      scripts=['bin/approxclock'],
+      scripts=['bin/approxclock', 'bin/approxclock.bat'],
       include_package_data=True,
       zip_safe=False)
