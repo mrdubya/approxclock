@@ -34,7 +34,7 @@ import approxclock
 # Utility product information
 __product__ = 'Approximate Time'
 __copyright__ = 'Copyright 2008-2023 Mike Williams. All rights reserved.'
-version_info = (0, 1, 0, 'alpha', 0)
+version_info = (0, 2, 0, 'alpha', 0)
 __version__ = '%d.%d.%d' % version_info[:3]
 if version_info[3] != 'final':
     __version__ += ' %s.%d' % version_info[3:]
@@ -49,7 +49,7 @@ def usage(mesg):
 
 try:
     opts, pargs = getopt.getopt(sys.argv[1:], "f:hr:")
-except getopt.GetoptError, e:
+except getopt.GetoptError as e:
     usage(e)
 
 # Process options
@@ -57,7 +57,7 @@ resolution = 5
 fast = 0
 for option, value in opts:
     if option == '-h':
-        print '%s\n%s' % (__description__, __doc__)
+        print('%s\n%s' % (__description__, __doc__))
         sys.exit()
 
     elif option == '-f':  # Minutes fast
@@ -68,6 +68,6 @@ for option, value in opts:
         if resolution % 5 != 0 or resolution > 20:
             usage('Invalid clock resolution %d.' % resolution)
 
-print approxclock.ApproxClock(fast=fast, resolution=resolution)
+print(approxclock.ApproxClock(fast=fast, resolution=resolution))
 
 # eof

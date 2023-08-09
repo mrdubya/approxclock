@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='approxclock',
-      version='0.1',
+      version='0.2',
       description='Report the time, approximately.',
       long_description=open('README.rst').read(),
       url='https://github.org/mrdubya/approxclock.git',

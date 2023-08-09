@@ -51,8 +51,8 @@ class ApproxClock(object):
     def __minutes(self, minutes):
         # Map minutes to nearest resolution for the clock, all of which have 5
         # as a common factor
-        return ((minutes + self.__resolution / 2) /
-                self.__resolution*self.__resolution)/5
+        return ((minutes + self.__resolution // 2) //
+                self.__resolution*self.__resolution)//5
 
     def __str(self, hour, minutes):
         per_5_mins = ['Five', 'Ten', 'Quarter', 'Twenty', 'Twenty-five',
@@ -83,9 +83,9 @@ class ApproxClock(object):
 
 if __name__ == '__main__':
     a = ApproxClock()
-    print repr(a)
+    print(repr(a))
     for hour in [0, 3, 8, 11, 15, 23]:
         for minute in [0, 5, 13, 18, 29, 36, 47, 54]:
-            print a.time(hour, minute)
+            print(a.time(hour, minute))
 
 # eof
