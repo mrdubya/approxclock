@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "approxclock"
+version = "0.2.0"
+description = "Report the time, approximately."
+authors = ["Mike Williams <mrmrdubya@gmail.com>"]
+readme = "README.md"
+packages = [{include="approxclock", from="src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.scripts]
+atime = "approxclock.approxclock:atime"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
